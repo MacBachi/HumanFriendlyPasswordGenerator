@@ -1,0 +1,51 @@
+# .gitignore
+
+# --- Nix Environment ---
+# Nix build result symlink
+/result
+
+# Local GOPATH set in flake.nix shellHook
+/.go/
+
+# --- Go Build Artifacts ---
+# We recommend building into a /build directory (e.g., 'go build -o build/hfpg .')
+/build/
+/dist/
+
+# If you 'go build .' in the root, uncomment the line below
+# and replace 'HumanFriendlyPasswordGenerator' with your binary name.
+# /HumanFriendlyPasswordGenerator
+# /HumanFriendlyPasswordGenerator.exe
+
+# Go module dependencies
+/vendor/
+
+# Test coverage
+*.cover
+cover.out
+
+# --- IDE & Editor Config ---
+# VSCode
+/.vscode/
+
+# GoLand / JetBrains
+/.idea/
+
+# Vim swap files
+*.swp
+*.swo
+
+# --- OS-specific ---
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Linux backup files
+*~
+
+# --- Local Config ---
+# Environment variables
+.env
+*.local
