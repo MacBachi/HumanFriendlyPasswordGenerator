@@ -80,7 +80,6 @@ The default password (4 words, 1 block) has **\~72 bits of entropy**.
 
 ### What is 72 Bits?
 
-  * **vs. Traditional Passwords:** To get 72 bits of entropy with a traditional password (using 95 characters: a-z, A-Z, 0-9, all symbols), you would need **11-12 random characters**.
   * **vs. Cracking (Modern Hashing):** If stored with **bcrypt** or **Argon2**, cracking 72 bits would take a supercomputer cluster **billions of years**.
   * **vs. Cracking (Broken Hashing):** If stored with **MD5** (fast hash), it would still take a supercomputer cluster **months to years** to crack.
 
@@ -104,20 +103,47 @@ The parameters have different impacts on security.
 
 -----
 
-## 🛡️ Core Interoperability Rules
+## 📊 Security Context: How This Compares
 
-The generator is designed to avoid typing errors in VMs, RDP sessions, or on foreign keyboards.
+### vs. Traditional Random Passwords (e.g., `k!8(Gf%z#p@L`)
 
-### 1\. Character Set (Letters)
+A traditional 11-12 character random password (using 95 characters) has the **same \~72 bits of entropy**.
 
-The default wordlist **excludes** words containing characters that change position:
+  * **The Problem:** `k!8(Gf%z#p@L` is **impossible to type** from memory. You cannot enter it on a mobile device or RDP session without extreme effort and high error rates.
+  * **The Failure Mode:** Because it's unusable, users write it on a sticky note (insecure) or revert to a weaker password they *can* remember.
+  * **The Solution:** `WortEins!1234!WortZweiWroDreiWortVier` provides the **exact same mathematical security** as `k!8(Gf%z#p@L`, but is delivered in a "chunkable" format that a human can actually read, verify, and type.
 
-  * **No `Z` or `Y`**
-  * **No Diacritics/Umlauts** (`ä`, `ö`, `ü`, `ß`, etc.)
+### vs. Common "Real-World" Passwords (e.g., `Password123!`)
 
-### 2\. Special Characters (The "Universal Set")
+Most data breaches are not caused by brute-forcing 72-bit passwords. They are caused by users picking simple, predictable patterns.
 
-The default separator pool (`+`, `-`, `_`, `!`) only uses characters that are in the same physical location on US (QWERTY) and German (QWERTZ) layouts.
+  * **The Problem:** Users choose passwords like `Summer2024!`, `Mustang69`, `Qwertz123`, or `P@ssw0rd!`.
+  * **The Attack:** Attackers do not brute-force these. They use **dictionary and mask attacks**. They take massive lists of common words (like `RockYou.txt`) and apply common mutations (like adding `123` or `!` at the end).
+  * **The Result:** These passwords have extremely low entropy (20-30 bits) and are often cracked in **seconds**.
+  * **The Solution:** This generator defeats dictionary attacks by using a **long combination of *truly random* words**, augmented with random numbers and typos. An attacker's dictionary (which contains `Password`) does not contain the random combination `HausBootSonneAuto`.
+
+-----
+
+## 🛡️ Final Security Recommendations
+
+A strong password is one layer of defense, but it is not enough on its own.
+
+### 1\. Use Multi-Factor Authentication (MFA / 2FA)
+
+MFA is the single most important security measure you can take. It means that even if an attacker *steals* your password (whether it's `123456` or the 72-bit one from this generator), they **cannot log in** because they do not have your second factor (e.g., your phone app, USB key).
+
+**Always enable MFA on every service that supports it.**
+
+### 2\. Use a Unique Password for Every Service
+
+Never reuse passwords. Attackers use a technique called **Credential Stuffing**.
+
+1.  A website ("BadHats.com") gets breached.
+2.  Attackers download the user list (e.g., `user@email.com` : `Wort!1234!WortZwei`).
+3.  They take that *exact* email and password combination and try it on your bank, your email provider, and your social media.
+4.  If you reused your password, they are now in.
+
+**This tool (or a password manager) should be used to create a *different*, strong password for every single account you own.**
 
 -----
 
