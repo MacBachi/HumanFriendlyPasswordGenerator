@@ -1,0 +1,33 @@
+name: GoReleaser
+
+on:
+  push:
+    tags:
+      - 'v*' # Trigger this workflow on tags like v1.0.0
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # This allows GoReleaser to see the full git history
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          # This automatically reads the Go version from your go.mod file
+          go-version-file: 'go.mod'
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v5
+        with:
+          # Use the latest version of GoReleaser
+          version: latest
+          # The command to run
+          args: release --clean
+        env:
+          # This token is automatically provided by GitHub
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

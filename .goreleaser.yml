@@ -1,0 +1,36 @@
+# This is the configuration for GoReleaser
+builds:
+  - # Your main build configuration
+    id: "hfpg"
+    # The path to your main.go
+    main: .
+    # The name of the resulting binary
+    binary: hfpg
+    # The platforms to build for
+    goos:
+      - linux
+      - windows
+      - darwin # (macOS)
+    # The architectures to build for
+    goarch:
+      - amd64 # (Standard 64-bit Intel/AMD)
+      - arm64 # (Apple Silicon / Raspberry Pi)
+    # This ensures go:embed works
+    flags:
+      - -tags=release
+
+archives:
+  - id: hfpg
+    # Wraps the binaries in .zip and .tar.gz
+    format: zip
+    # Naming convention for the archives
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  # Creates a checksums.txt file for verification
+  name_template: 'checksums.txt'
+
+release:
+  # This posts the result to GitHub Releases
+  # 'auto' means it's a draft if prerelease, otherwise full release
+  prerelease: auto
